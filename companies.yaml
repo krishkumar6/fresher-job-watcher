@@ -36,6 +36,7 @@ filters:
     - engineer 1
     - junior
     - intern
+    - internship
     - apprentice
     - web developer
     - application engineer
@@ -65,11 +66,22 @@ filters:
     - sde2
     - sde3
     - sde4
+    - l2
+    - l3
+    - l4
+    - l5
   # Location must contain one of these (jobs with no location listed are kept):
   locations:
     - bengaluru
     - bangalore
     - karnataka
+    - pune
+    - maharashtra
+    - noida
+    - gurugram
+    - gurgaon
+    - delhi
+    - ncr
     - india
     - remote
 
@@ -117,6 +129,68 @@ companies:
     # NOTE: verified live but very low posting count — spot-check with
     # --test and remove if it isn't Swiggy's real active pipeline.
 
+  # ------------- Bengaluru / Pune / Noida-NCR expansion ----------------------
+  - name: InMobi
+    ats: greenhouse
+    slug: inmobi
+  - name: Naukri (Info Edge)
+    ats: greenhouse
+    slug: naukri
+    # NOTE: only ~3 live postings at last check — low volume, keep an eye on it.
+  - name: Druva
+    ats: greenhouse
+    slug: druva
+  - name: Turing
+    ats: greenhouse
+    slug: turing
+  - name: CloudSEK
+    ats: greenhouse
+    slug: cloudsek
+  - name: Harness
+    ats: greenhouse
+    slug: harnessinc
+  - name: Diligent
+    ats: greenhouse
+    slug: diligentcorporation
+  - name: Toast
+    ats: greenhouse
+    slug: toast
+  - name: Kaseya
+    ats: greenhouse
+    slug: kaseya
+  - name: Glean
+    ats: greenhouse
+    slug: gleanwork
+  - name: 6sense
+    ats: greenhouse
+    slug: 6sense
+  - name: Twilio
+    ats: greenhouse
+    slug: twilio
+  - name: FamPay
+    ats: lever
+    slug: fampay
+  - name: Sprinto
+    ats: lever
+    slug: Sprinto
+  - name: Mindtickle
+    ats: lever
+    slug: mindtickle
+  - name: Hevo Data
+    ats: lever
+    slug: hevodata
+  - name: Shipsy
+    ats: smartrecruiters
+    slug: shipsy
+    # NOTE: only ~5 live postings — low volume, spot-check periodically.
+  - name: Unacademy
+    ats: smartrecruiters
+    slug: unacademy
+    # NOTE: only ~3 live postings — low volume, spot-check periodically.
+  - name: Nagarro
+    ats: smartrecruiters
+    slug: Nagarro1
+
   # ------------- Large companies on Workday (paste careers URL) -------------
   - name: Salesforce
     ats: workday
@@ -158,6 +232,10 @@ companies:
     ats: workday
     url: https://uniphore.wd503.myworkdayjobs.com/Uniphore
     search_text: bangalore
+  - name: Sprinklr
+    ats: workday
+    url: https://sprinklr.wd1.myworkdayjobs.com/sprinklr/careers
+    search_text: gurgaon
 
   # Add more using the instructions at the top.
   # Walmart Global Tech: skipped for now - its Workday tenant (wd5/walmart)

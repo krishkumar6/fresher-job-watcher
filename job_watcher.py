@@ -174,7 +174,7 @@ def matches(job, filters):
     exclude = [norm(k) for k in filters.get("exclude_keywords", [])]
     locations = [norm(k) for k in filters.get("locations", [])]
 
-    if include and not any(k in title for k in include):
+    if include and not any(k and f" {k} " in f" {title} " for k in include):
         return False
     if any(k and f" {k} " in f" {title} " for k in exclude):
         return False
