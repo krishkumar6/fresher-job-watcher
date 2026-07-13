@@ -67,64 +67,34 @@ filters:
 companies:
   # ------------- Startups / product companies (fast-moving, check often) ----
   - name: Razorpay
-    ats: workday
-    url: https://razorpay.wd3.myworkdayjobs.com/en-US/razorpay_careers
+    ats: greenhouse
+    slug: razorpaysoftwareprivatelimited
   - name: Postman
     ats: greenhouse
     slug: postman
   - name: BrowserStack
-    ats: greenhouse
-    slug: browserstack
-  - name: Hasura
-    ats: greenhouse
-    slug: hasura
+    ats: workday
+    url: https://browserstack.wd3.myworkdayjobs.com/en-US/External
   - name: CRED
     ats: lever
     slug: cred
   - name: Groww
     ats: greenhouse
     slug: groww
-  - name: slice
-    ats: greenhouse
-    slug: sliceit
-  - name: Jupiter Money
-    ats: lever
-    slug: jupiter-money
-  - name: smallcase
-    ats: lever
-    slug: smallcase
-  - name: Zepto
-    ats: lever
-    slug: zepto
   - name: Meesho
-    ats: greenhouse
+    ats: lever
     slug: meesho
   - name: Whatfix
     ats: smartrecruiters
     slug: Whatfix
-  - name: MoEngage
-    ats: lever
-    slug: moengage
-  - name: CleverTap
-    ats: greenhouse
-    slug: clevertap
   - name: Netradyne
     ats: greenhouse
     slug: netradyne
   - name: Observe.AI
     ats: greenhouse
     slug: observeai
-  - name: Tracxn
-    ats: greenhouse
-    slug: tracxn
-  - name: Cashfree
-    ats: greenhouse
-    slug: cashfreepayments
-  - name: M2P Fintech
-    ats: greenhouse
-    slug: m2pfintech
   - name: Zeta
-    ats: greenhouse
+    ats: lever
     slug: zeta
   - name: PhonePe
     ats: greenhouse
@@ -154,10 +124,6 @@ companies:
   - name: Target India
     ats: workday
     url: https://target.wd5.myworkdayjobs.com/en-US/targetcareers
-    search_text: bangalore
-  - name: Intuit
-    ats: workday
-    url: https://intuit.wd1.myworkdayjobs.com/en-US/Intuit_Careers
     search_text: bangalore
   - name: Lowe's India
     ats: workday
@@ -193,4 +159,8 @@ companies:
   #   Flipkart (TurboHire), Myntra (custom), JPMorgan (Oracle Cloud HCM),
   #   Goldman Sachs (in-house), SAP (SuccessFactors), Chargebee (SuccessFactors),
   #   Capillary (Skillate), Vymo (Darwinbox), Yellow.ai (Zoho Recruit),
-  #   Ather Energy (custom).
+  #   Ather Energy (custom), Hasura/PromptQL (Gem), slice (Kula.ai),
+  #   Jupiter Money (Keka), smallcase (Freshteam), Zepto (TalentRecruit),
+  #   MoEngage (Trakstar), CleverTap (Kula.ai), Tracxn (Trakstar),
+  #   Cashfree (Keka), M2P Fintech (Darwinbox), Intuit (Radancy TalentBrew -
+  #   moved off Workday entirely).
