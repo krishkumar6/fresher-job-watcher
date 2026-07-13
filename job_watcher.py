@@ -190,6 +190,8 @@ def send_telegram(text):
             "text": text,
             "disable_web_page_preview": True,
         }, timeout=TIMEOUT)
+        if not r.ok:
+            print(f"Telegram API error {r.status_code}: {r.text}")
         return r.ok
     except requests.RequestException as e:
         print(f"Telegram send failed: {e}")
