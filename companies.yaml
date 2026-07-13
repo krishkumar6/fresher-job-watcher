@@ -126,6 +126,17 @@ companies:
   - name: Zeta
     ats: greenhouse
     slug: zeta
+  - name: PhonePe
+    ats: greenhouse
+    slug: phonepe
+  - name: Freshworks
+    ats: smartrecruiters
+    slug: freshworks
+  - name: Swiggy
+    ats: smartrecruiters
+    slug: swiggy
+    # NOTE: verified live but very low posting count — spot-check with
+    # --test and remove if it isn't Swiggy's real active pipeline.
 
   # ------------- Large companies on Workday (paste careers URL) -------------
   - name: Salesforce
@@ -148,8 +159,38 @@ companies:
     ats: workday
     url: https://intuit.wd1.myworkdayjobs.com/en-US/Intuit_Careers
     search_text: bangalore
+  - name: Lowe's India
+    ats: workday
+    url: https://lowes.wd5.myworkdayjobs.com/en-US/LWS_External_CS
+    search_text: bangalore
+  - name: Wells Fargo
+    ats: workday
+    url: https://wf.wd1.myworkdayjobs.com/en-US/WellsFargoJobs
+    search_text: bangalore
+  - name: Visa
+    ats: workday
+    url: https://visa.wd5.myworkdayjobs.com/en-US/Visa
+    search_text: bangalore
+  - name: Mastercard
+    ats: workday
+    url: https://mastercard.wd1.myworkdayjobs.com/en-US/CorporateCareers
+    search_text: india
+  - name: Cisco
+    ats: workday
+    url: https://cisco.wd5.myworkdayjobs.com/en-US/Cisco_Careers
+    search_text: bangalore
+  - name: Uniphore
+    ats: workday
+    url: https://uniphore.wd503.myworkdayjobs.com/Uniphore
+    search_text: bangalore
 
-  # Add more using the instructions at the top. Good candidates for you:
-  # Flipkart, PhonePe, Swiggy, Myntra, Walmart Global Tech, Lowe's India,
-  # JPMorgan, Goldman Sachs, Wells Fargo, Visa, Mastercard, Cisco, SAP,
-  # Freshworks, Chargebee, Capillary, Vymo, Yellow.ai, Uniphore, Ather.
+  # Add more using the instructions at the top.
+  # Walmart Global Tech: skipped for now - its Workday tenant (wd5/walmart)
+  # is mid-migration and the jobs API returns ERR_TENANT_MIGRATED (410).
+  # Re-check https://walmart.wd5.myworkdayjobs.com/en-US/WalmartExternal
+  # later and re-add once the API responds again.
+  # NOT ADDED (no supported ATS - can't be polled by this watcher):
+  #   Flipkart (TurboHire), Myntra (custom), JPMorgan (Oracle Cloud HCM),
+  #   Goldman Sachs (in-house), SAP (SuccessFactors), Chargebee (SuccessFactors),
+  #   Capillary (Skillate), Vymo (Darwinbox), Yellow.ai (Zoho Recruit),
+  #   Ather Energy (custom).
