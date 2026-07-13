@@ -1,0 +1,155 @@
+# =============================================================================
+# Companies to watch + filters
+# =============================================================================
+# HOW TO ADD A COMPANY (takes ~1 minute):
+#   1. Open the company's careers page and click any job posting.
+#   2. Look at the URL of the job board:
+#        boards.greenhouse.io/SLUG or job-boards.greenhouse.io/SLUG -> ats: greenhouse
+#        jobs.lever.co/SLUG                                         -> ats: lever
+#        jobs.ashbyhq.com/SLUG                                      -> ats: ashby
+#        jobs.smartrecruiters.com/SLUG                              -> ats: smartrecruiters
+#        COMPANY.wdX.myworkdayjobs.com/en-US/SITE                   -> ats: workday (paste full url)
+#   3. Add an entry below, then run:  python job_watcher.py --test
+#      to confirm it fetches correctly before relying on it.
+#
+# NOTE: The slugs below are common/likely values — RUN --test ONCE and remove
+# or fix any entry that errors. Company career systems change over time.
+# =============================================================================
+
+filters:
+  # Tuned to Krish's resume: Java / Spring Boot / React full-stack fresher.
+  # A job title must contain at least ONE include keyword...
+  include_keywords:
+    - software engineer
+    - software developer
+    - java
+    - backend
+    - back end
+    - full stack
+    - fullstack
+    - full-stack
+    - sde
+    - graduate
+    - trainee
+    - associate engineer
+    - engineer i
+    - engineer 1
+    - junior
+    - intern
+    - apprentice
+    - web developer
+    - application engineer
+  # ...and must NOT contain any of these (filters out senior roles):
+  exclude_keywords:
+    - senior
+    - sr
+    - lead
+    - staff
+    - principal
+    - manager
+    - architect
+    - director
+    - head
+    - ii
+    - iii
+    - "2"
+    - "3"
+    - sde2
+    - sde3
+  # Location must contain one of these (jobs with no location listed are kept):
+  locations:
+    - bengaluru
+    - bangalore
+    - karnataka
+    - india
+    - remote
+
+companies:
+  # ------------- Startups / product companies (fast-moving, check often) ----
+  - name: Razorpay
+    ats: workday
+    url: https://razorpay.wd3.myworkdayjobs.com/en-US/razorpay_careers
+  - name: Postman
+    ats: greenhouse
+    slug: postman
+  - name: BrowserStack
+    ats: greenhouse
+    slug: browserstack
+  - name: Hasura
+    ats: greenhouse
+    slug: hasura
+  - name: CRED
+    ats: lever
+    slug: cred
+  - name: Groww
+    ats: greenhouse
+    slug: groww
+  - name: slice
+    ats: greenhouse
+    slug: sliceit
+  - name: Jupiter Money
+    ats: lever
+    slug: jupiter-money
+  - name: smallcase
+    ats: lever
+    slug: smallcase
+  - name: Zepto
+    ats: lever
+    slug: zepto
+  - name: Meesho
+    ats: greenhouse
+    slug: meesho
+  - name: Whatfix
+    ats: smartrecruiters
+    slug: Whatfix
+  - name: MoEngage
+    ats: lever
+    slug: moengage
+  - name: CleverTap
+    ats: greenhouse
+    slug: clevertap
+  - name: Netradyne
+    ats: greenhouse
+    slug: netradyne
+  - name: Observe.AI
+    ats: greenhouse
+    slug: observeai
+  - name: Tracxn
+    ats: greenhouse
+    slug: tracxn
+  - name: Cashfree
+    ats: greenhouse
+    slug: cashfreepayments
+  - name: M2P Fintech
+    ats: greenhouse
+    slug: m2pfintech
+  - name: Zeta
+    ats: greenhouse
+    slug: zeta
+
+  # ------------- Large companies on Workday (paste careers URL) -------------
+  - name: Salesforce
+    ats: workday
+    url: https://salesforce.wd12.myworkdayjobs.com/en-US/External_Career_Site
+    search_text: bangalore
+  - name: NVIDIA
+    ats: workday
+    url: https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite
+    search_text: bangalore
+  - name: Adobe
+    ats: workday
+    url: https://adobe.wd5.myworkdayjobs.com/en-US/external_experienced
+    search_text: bangalore
+  - name: Target India
+    ats: workday
+    url: https://target.wd5.myworkdayjobs.com/en-US/targetcareers
+    search_text: bangalore
+  - name: Intuit
+    ats: workday
+    url: https://intuit.wd1.myworkdayjobs.com/en-US/Intuit_Careers
+    search_text: bangalore
+
+  # Add more using the instructions at the top. Good candidates for you:
+  # Flipkart, PhonePe, Swiggy, Myntra, Walmart Global Tech, Lowe's India,
+  # JPMorgan, Goldman Sachs, Wells Fargo, Visa, Mastercard, Cisco, SAP,
+  # Freshworks, Chargebee, Capillary, Vymo, Yellow.ai, Uniphore, Ather.
