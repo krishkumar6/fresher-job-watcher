@@ -153,6 +153,19 @@ def norm(s):
     return re.sub(r"[^a-z0-9 ]", " ", (s or "").lower())
 
 
+# Titles that spell out "X+ years" / "X to Y years" experience requirements
+# are almost always senior postings, even when they also contain a fresher
+# keyword like "software engineer". None of exclude_keywords catches this
+# since the years vary, so it's handled separately here.
+EXPERIENCE_RE = re.compile(r"\b(\d{1,2})\s*(?:to\s*\d{1,2})?\s*\+?\s*(?:years?|yrs?)\b")
+MAX_FRESHER_YEARS = 2
+
+
+def has_senior_experience(title):
+    m = EXPERIENCE_RE.search(title)
+    return bool(m) and int(m.group(1)) > MAX_FRESHER_YEARS
+
+
 def matches(job, filters):
     title = norm(job["title"])
     location = norm(job["location"])
@@ -164,6 +177,8 @@ def matches(job, filters):
     if include and not any(k in title for k in include):
         return False
     if any(k and f" {k} " in f" {title} " for k in exclude):
+        return False
+    if has_senior_experience(title):
         return False
     if locations and location and not any(k in location for k in locations):
         return False

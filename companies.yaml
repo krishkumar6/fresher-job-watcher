@@ -50,12 +50,21 @@ filters:
     - architect
     - director
     - head
+    - technical leader
+    - distinguished
+    - smts
+    - lmts
+    - pmts
+    - dmts
     - ii
     - iii
+    - iv
     - "2"
     - "3"
+    - "4"
     - sde2
     - sde3
+    - sde4
   # Location must contain one of these (jobs with no location listed are kept):
   locations:
     - bengaluru
