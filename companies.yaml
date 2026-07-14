@@ -191,6 +191,74 @@ companies:
     ats: smartrecruiters
     slug: Nagarro1
 
+  # ------------- More Bengaluru startups / dev-tools / infra -----------------
+  - name: HackerRank
+    ats: greenhouse
+    slug: hackerrank
+  - name: Sigmoid
+    ats: greenhouse
+    slug: sigmoid
+  - name: Celonis
+    ats: greenhouse
+    slug: celonis
+  - name: Glance
+    ats: greenhouse
+    slug: glance
+  - name: Netskope
+    ats: greenhouse
+    slug: netskope
+  - name: Aerospike
+    ats: greenhouse
+    slug: aerospike
+  - name: Elastic
+    ats: greenhouse
+    slug: elastic
+  - name: GitLab
+    ats: greenhouse
+    slug: gitlab
+  - name: Datadog
+    ats: greenhouse
+    slug: datadog
+  - name: New Relic
+    ats: greenhouse
+    slug: newrelic
+  - name: Databricks
+    ats: greenhouse
+    slug: databricks
+  - name: CockroachLabs
+    ats: greenhouse
+    slug: cockroachlabs
+  - name: AppsFlyer
+    ats: greenhouse
+    slug: appsflyer
+    # NOTE: only ~2 Bangalore postings — low volume, spot-check periodically.
+  - name: Contentstack
+    ats: greenhouse
+    slug: contentstack
+    # NOTE: only ~2 Bangalore postings — low volume, spot-check periodically.
+  - name: SmartBear
+    ats: greenhouse
+    slug: smartbear
+  - name: JFrog
+    ats: greenhouse
+    slug: jfrog
+  - name: SentiLink
+    ats: ashby
+    slug: sentilink
+  - name: CertifyOS
+    ats: ashby
+    slug: certifyos
+  - name: Bureau
+    ats: ashby
+    slug: bureau
+  - name: SigNoz
+    ats: ashby
+    slug: signoz
+  - name: Nium
+    ats: lever
+    slug: nium
+    # NOTE: only ~2 Bangalore postings — low volume, spot-check periodically.
+
   # ------------- Large companies on Workday (paste careers URL) -------------
   - name: Salesforce
     ats: workday
