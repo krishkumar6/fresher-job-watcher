@@ -276,6 +276,52 @@ companies:
     ats: ashby
     slug: spotdraft
 
+  # ------------- E-commerce SaaS / gaming / logistics -------------------------
+  - name: CommerceIQ
+    ats: greenhouse
+    slug: commerceiq
+  - name: Quince
+    ats: greenhouse
+    slug: quince
+  - name: Krafton India
+    ats: greenhouse
+    slug: kraftonindia
+  - name: Zynga
+    ats: greenhouse
+    slug: zyngacareers
+  - name: Scopely
+    ats: greenhouse
+    slug: scopely
+  - name: Skillz Inc
+    ats: greenhouse
+    slug: skillzinc
+  - name: Coupang
+    ats: greenhouse
+    slug: coupang
+  - name: project44
+    ats: greenhouse
+    slug: project44
+  - name: Easyship
+    ats: greenhouse
+    slug: easyship
+  - name: Instawork
+    ats: greenhouse
+    slug: instawork
+  - name: Rockstar Games
+    ats: greenhouse
+    slug: rockstargames
+    # NOTE: only ~2 Bengaluru postings — low volume, spot-check periodically.
+  - name: Bazaarvoice
+    ats: lever
+    slug: bazaarvoice
+  - name: CLO Virtual Fashion
+    ats: lever
+    slug: clovirtualfashion
+  - name: SpotOn
+    ats: ashby
+    slug: Spoton
+    # NOTE: only ~3 Bengaluru postings — low volume, spot-check periodically.
+
   # ------------- More enterprise infra / cloud / cybersecurity ---------------
   - name: MongoDB
     ats: greenhouse
