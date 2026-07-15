@@ -259,6 +259,70 @@ companies:
     slug: nium
     # NOTE: only ~2 Bangalore postings — low volume, spot-check periodically.
 
+  # ------------- Fintech / legaltech ------------------------------------------
+  - name: Fi Money (epiFi)
+    ats: lever
+    slug: epifi
+  - name: Stable Money
+    ats: lever
+    slug: stable-money1
+  - name: Paytm
+    ats: lever
+    slug: paytm
+  - name: Aspora
+    ats: ashby
+    slug: aspora
+  - name: SpotDraft
+    ats: ashby
+    slug: spotdraft
+
+  # ------------- More enterprise infra / cloud / cybersecurity ---------------
+  - name: MongoDB
+    ats: greenhouse
+    slug: mongodb
+  - name: Okta
+    ats: greenhouse
+    slug: okta
+  - name: Zscaler
+    ats: greenhouse
+    slug: zscaler
+  - name: Rubrik
+    ats: greenhouse
+    slug: rubrik
+  - name: Pure Storage
+    ats: greenhouse
+    slug: purestorage
+  - name: Fivetran
+    ats: greenhouse
+    slug: fivetran
+  - name: Smartsheet
+    ats: greenhouse
+    slug: smartsheet
+  - name: Vonage
+    ats: greenhouse
+    slug: vonage
+  - name: Kong Inc
+    ats: ashby
+    slug: kong
+  - name: Snowflake
+    ats: ashby
+    slug: snowflake
+    # NOTE: only ~4 Bengaluru postings, mostly Solutions/Sales Engineer — low volume.
+  - name: Temporal Technologies
+    ats: ashby
+    slug: temporal
+    # NOTE: only 1 Bengaluru posting at last check — very low volume.
+  - name: Arista Networks
+    ats: smartrecruiters
+    slug: AristaNetworks
+  - name: ServiceNow
+    ats: smartrecruiters
+    slug: ServiceNow
+  - name: Canva
+    ats: smartrecruiters
+    slug: Canva
+    # NOTE: only 1 Bengaluru posting at last check, non-engineering — very low volume.
+
   # ------------- Large companies on Workday (paste careers URL) -------------
   - name: Salesforce
     ats: workday
@@ -304,6 +368,37 @@ companies:
     ats: workday
     url: https://sprinklr.wd1.myworkdayjobs.com/sprinklr/careers
     search_text: gurgaon
+  - name: Palo Alto Networks
+    ats: workday
+    url: https://paloaltonetworks.wd5.myworkdayjobs.com/en-US/panwexternalcareers
+    search_text: bangalore
+  - name: F5
+    ats: workday
+    url: https://ffive.wd5.myworkdayjobs.com/en-US/f5jobs
+    search_text: bangalore
+  - name: CrowdStrike
+    ats: workday
+    url: https://crowdstrike.wd5.myworkdayjobs.com/en-US/crowdstrikecareers
+    search_text: bangalore
+  - name: HPE
+    ats: workday
+    url: https://hpe.wd5.myworkdayjobs.com/en-US/Jobsathpe
+    search_text: bangalore
+  - name: Genesys
+    ats: workday
+    url: https://genesys.wd1.myworkdayjobs.com/en-US/Genesys
+    search_text: bangalore
+    # NOTE: only ~3 Bangalore postings at last check — low volume.
+  - name: Forcepoint
+    ats: workday
+    url: https://forcepoint.wd1.myworkdayjobs.com/en-US/external-careers
+    search_text: bangalore
+    # NOTE: only ~3 Bengaluru postings at last check — low volume.
+  - name: Trend Micro
+    ats: workday
+    url: https://trendmicro.wd3.myworkdayjobs.com/en-US/External
+    search_text: bangalore
+    # NOTE: only ~3 Bangalore postings at last check, mostly sales-adjacent — low volume.
 
   # Add more using the instructions at the top.
   # Walmart Global Tech: skipped for now - its Workday tenant (wd5/walmart)
