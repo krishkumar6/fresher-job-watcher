@@ -40,6 +40,7 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
 TEST_MODE = "--test" in sys.argv
+PING_MODE = "--ping" in sys.argv
 
 
 # ----------------------------------------------------------------------------
@@ -354,6 +355,16 @@ def save_state(seen):
 
 
 def main():
+    if PING_MODE:
+        ok = send_telegram("✅ Test message from your job watcher — "
+                           "Telegram credentials work!")
+        print("Ping sent — check your Telegram." if ok else
+              "Ping FAILED — see the error above. Check that the "
+              "TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID secrets are set and that "
+              "you have sent your bot a message first (it can't message you "
+              "until you do).")
+        sys.exit(0 if ok else 1)
+
     config = yaml.safe_load(CONFIG_FILE.read_text())
     default_filters = config.get("filters", {})
     companies = config.get("companies", [])
@@ -400,6 +411,7 @@ def main():
         new_matches = new_matches[:20]
 
     alerted = 0
+    failed = 0
     for name, j, filters in new_matches:
         ok, exp_note, skills = vet_new_job(j, filters)
         if not ok:
@@ -413,7 +425,12 @@ def main():
                 f"🧰 Matches your stack: {', '.join(skills[:8]) or '—'}\n\n"
                 f"Apply: {j['url']}")
         sent = send_telegram(text)
-        alerted += 1
+        if sent:
+            alerted += 1
+        else:
+            failed += 1
+            # Un-mark it so the next run retries instead of losing the alert.
+            seen.discard(j["id"])
         print(f"[alert{'✓' if sent else '✗'}] {name}: {j['title']}")
         time.sleep(1)
 
@@ -421,8 +438,12 @@ def main():
     # silently skip alerting on them.
     if not TEST_MODE:
         save_state(seen)
-    print(f"Done. {alerted} alert(s) sent, "
-          f"{len(new_matches) - alerted} new job(s) filtered out by deep check.")
+    print(f"Done. {alerted} alert(s) sent, {failed} failed, "
+          f"{len(new_matches) - alerted - failed} filtered out by deep check.")
+    if failed and not TEST_MODE:
+        sys.exit(f"{failed} Telegram send(s) FAILED -- check the "
+                 f"TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID repo secrets. "
+                 f"Failed jobs stay unseen and will retry next run.")
 
 
 if __name__ == "__main__":
