@@ -128,6 +128,7 @@
 "workday:adobe:/job/Bangalore/Computer-Scientist---Java---Microservices_R168302",
 "workday:adobe:/job/Bangalore/Computer-Scientist---Java-Backend--_R170425-1",
 "workday:adobe:/job/Bangalore/Software-Development-Engineer-4---Fullstack---Backend-heavy_R169194-1",
+"workday:browserstack:/job/Mumbai-Remote/SDE---Customer-Engineering---Automation-Testing---Selenium----Pre-sales---Post-sales--_JR103533",
 "workday:cisco:/job/Bangalore-India/Embedded-Software-Engineer---C--Linux--Networking--5--yrs-_2018344-1",
 "workday:cisco:/job/Bangalore-India/Embedded-Software-Engineer---C--Linux--Networking--5--yrs-_2018345",
 "workday:cisco:/job/Bangalore-India/Embedded-Wireless-Software-Engineer----G8-_2013513",
@@ -199,5 +200,7 @@
 "workday:salesforce:/job/India---Bangalore/Software-Engineering-LMTS--AI-LLM_JR343708",
 "workday:salesforce:/job/India---Bangalore/Software-Engineering-SMTS---MTS----Platform-Engineering--Backend--Kubernetes---Cloud-_JR347341",
 "workday:target:/job/BangaloreIndia/Apprentice---Retail-Ops_R0000348370",
-"workday:target:/job/BangaloreIndia/Apprentice---Technology_R0000348368"
+"workday:target:/job/BangaloreIndia/Apprentice---Technology_R0000348368",
+"workday:target:/job/BangaloreIndia/Engineer---Target-India---Backend_R0000446296",
+"workday:wf:/job/Bengaluru-India/Software-Engineer---Golang-and-or-Python_R-560662"
 ]
