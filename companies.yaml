@@ -397,6 +397,66 @@ companies:
     slug: Canva
     # NOTE: only 1 Bengaluru posting at last check, non-engineering — very low volume.
 
+  # ------------- Verified Bangalore-hiring additions (2026-07) ----------------
+  # Each slug below was live-probed against its ATS API on 2026-07-20; the
+  # "blr" note is the count of Bengaluru/Karnataka postings at that moment.
+  - name: Tekion
+    ats: greenhouse
+    slug: tekion
+    # blr=43 — strong Bengaluru pipeline (auto-retail SaaS, HQ presence).
+  - name: Stripe
+    ats: greenhouse
+    slug: stripe
+    # blr=43 — large Bengaluru engineering hub.
+  - name: Roku
+    ats: greenhouse
+    slug: roku
+    # blr=41 — sizeable Bengaluru R&D centre.
+  - name: Sarvam AI
+    ats: ashby
+    slug: sarvam
+    # blr=56 — India-first AI lab, almost entirely Bengaluru.
+  - name: Bosch
+    ats: smartrecruiters
+    slug: BoschGroup
+    # blr=14 — large Bengaluru (Bosch Global Software / RBEI) base.
+  - name: Tide
+    ats: greenhouse
+    slug: tide
+    # blr=7 — Bengaluru tech centre (fintech for SMEs).
+  - name: Airbnb
+    ats: greenhouse
+    slug: airbnb
+    # blr=4 — Bengaluru tech hub.
+  - name: Samsara
+    ats: greenhouse
+    slug: samsara
+    # blr=4 — Bengaluru engineering (IoT / fleet).
+  - name: Sumo Logic
+    ats: greenhouse
+    slug: sumologic
+    # blr=3 — Bengaluru dev centre (observability).
+  - name: Coinbase
+    ats: greenhouse
+    slug: coinbase
+    # blr low but large India/remote pipeline — worth watching.
+  - name: Amplitude
+    ats: greenhouse
+    slug: amplitude
+    # blr low but active India/remote postings — product analytics.
+  - name: Zeta Global
+    ats: greenhouse
+    slug: zetaglobal
+    # blr=19 — Bengaluru engineering (marketing-tech; distinct from Zeta/epiFi).
+  - name: Anthropic
+    ats: greenhouse
+    slug: anthropic
+    # blr=3 — small but growing Bengaluru presence (AI lab).
+  - name: LaunchDarkly
+    ats: greenhouse
+    slug: launchdarkly
+    # blr low — feature-flag/dev-tools, occasional Bengaluru roles.
+
   # ------------- Large companies on Workday (paste careers URL) -------------
   - name: Salesforce
     ats: workday
@@ -473,6 +533,64 @@ companies:
     url: https://trendmicro.wd3.myworkdayjobs.com/en-US/External
     search_text: bangalore
     # NOTE: only ~3 Bangalore postings at last check, mostly sales-adjacent — low volume.
+
+  # ------------- Verified Bangalore Workday tenants (probed 2026-07-20) -------
+  # "blr" = Bengaluru postings returned for searchText=bangalore at probe time.
+  - name: Intel
+    ats: workday
+    url: https://intel.wd1.myworkdayjobs.com/en-US/External
+    search_text: bangalore
+    # blr=20 — large Bengaluru R&D (software + silicon).
+  - name: Broadcom (VMware)
+    ats: workday
+    url: https://broadcom.wd1.myworkdayjobs.com/en-US/External_Career
+    search_text: bangalore
+    # blr=20 — VMware Bengaluru engineering, now under Broadcom.
+  - name: Deutsche Bank
+    ats: workday
+    url: https://db.wd3.myworkdayjobs.com/en-US/DBWebsite
+    search_text: bangalore
+    # blr=20 — huge Bengaluru/Pune tech centre.
+  - name: Applied Materials
+    ats: workday
+    url: https://amat.wd1.myworkdayjobs.com/en-US/External
+    search_text: bangalore
+    # blr=19 — Bengaluru engineering (software + hardware).
+  - name: Analog Devices
+    ats: workday
+    url: https://analogdevices.wd1.myworkdayjobs.com/en-US/External
+    search_text: bangalore
+    # blr=16 — Bengaluru design centre (embedded/software roles too).
+  - name: 3M
+    ats: workday
+    url: https://3m.wd1.myworkdayjobs.com/en-US/Search
+    search_text: bangalore
+    # blr=20 — Bengaluru R&D/tech centre.
+  - name: Nasdaq
+    ats: workday
+    url: https://nasdaq.wd1.myworkdayjobs.com/en-US/Global_External_Site
+    search_text: bangalore
+    # blr=13 — Bengaluru technology hub (fintech infra).
+  - name: eBay
+    ats: workday
+    url: https://ebay.wd5.myworkdayjobs.com/en-US/apply
+    search_text: bangalore
+    # blr=7 — Bengaluru product/engineering centre.
+  - name: Autodesk
+    ats: workday
+    url: https://autodesk.wd1.myworkdayjobs.com/en-US/Ext
+    search_text: bangalore
+    # blr=5 — Bengaluru engineering.
+  - name: PayPal
+    ats: workday
+    url: https://paypal.wd1.myworkdayjobs.com/en-US/jobs
+    search_text: bangalore
+    # blr=4 — Bengaluru/Chennai technology centres.
+  - name: Morgan Stanley
+    ats: workday
+    url: https://ms.wd5.myworkdayjobs.com/en-US/External
+    search_text: bangalore
+    # NOTE: only ~1 Bengaluru posting surfaced at probe time — low volume, keep watching.
 
   # Add more using the instructions at the top.
   # Walmart Global Tech: skipped for now - its Workday tenant (wd5/walmart)
