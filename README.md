@@ -56,6 +56,15 @@ free and unlimited on public repos, and this job uses about a minute per run.
    `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates`
    — and copy the number at `"chat":{"id": ... }`.
 
+   > **Delete the `<` and `>` too.** `<YOUR_TOKEN>` means replace the whole
+   > thing, brackets included, so the URL reads
+   > `https://api.telegram.org/bot7123456789:AAF.../getUpdates`. Leaving the
+   > brackets in gives you `{"ok":false,"error_code":404}`.
+   >
+   > Getting `{"ok":true,"result":[]}` instead? You haven't messaged the bot
+   > yet, or you did it over 24 hours ago — Telegram drops pending updates
+   > after a day. Send it another message and reload.
+
 ### Step 3 — Add your credentials as repository secrets
 
 In **your** repo: **Settings → Secrets and variables → Actions → New repository
