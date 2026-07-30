@@ -24,6 +24,17 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Check config.yaml exists
+        if: ${{ !inputs.ping }}
+        run: |
+          if [ ! -f config.yaml ]; then
+            echo "::error::config.yaml is missing. This template ships only"
+            echo "::error::config.example.yaml so you don't inherit someone"
+            echo "::error::else's filters. Run:  cp config.example.yaml config.yaml"
+            echo "::error::then edit it, commit it and push. See README step 4."
+            exit 1
+          fi
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
@@ -38,6 +49,13 @@ jobs:
         # be persisted as seen; failed ones were un-marked and will retry.
         if: ${{ !cancelled() && !inputs.ping }}
         run: |
+          # seen_jobs.json is not committed to the template -- it appears on
+          # your first run and is committed from then on. Skip if the watcher
+          # crashed before writing it.
+          if [ ! -f seen_jobs.json ]; then
+            echo "No seen_jobs.json to commit."
+            exit 0
+          fi
           git config user.name "job-watcher-bot"
           git config user.email "actions@github.com"
           git add seen_jobs.json

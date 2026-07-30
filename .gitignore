@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+
+# NOTE: config.yaml and seen_jobs.json are deliberately NOT ignored.
+#
+#   config.yaml    — your filters. You MUST commit it in your own repo, or the
+#                    GitHub Actions runner has nothing to filter with. It is
+#                    absent from the template on purpose so you can't
+#                    accidentally inherit someone else's resume.
+#   seen_jobs.json — created on your first run and committed back by the
+#                    workflow. That commit is how the watcher remembers which
+#                    jobs it has already told you about.

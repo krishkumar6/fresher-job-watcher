@@ -1,0 +1,152 @@
+# =============================================================================
+# YOUR filters — copy this file to `config.yaml` and edit it.
+# =============================================================================
+#   cp config.example.yaml config.yaml
+#
+# This is the only file you need to change to make the watcher yours.
+# `companies.yaml` is the shared company list — leave it alone (or add to it
+# and send a PR upstream so everyone benefits).
+#
+# After editing, check your filters against real postings before relying on it:
+#   python job_watcher.py --test
+# =============================================================================
+
+filters:
+  # ---------------------------------------------------------------------------
+  # The most years of experience a posting is allowed to DEMAND. Checked in the
+  # job TITLE and, for new matches, in the FULL DESCRIPTION.
+  #
+  # Read it as "I have this many years", because that's how it filters:
+  #
+  #   0  -> only "no experience needed" and "0-N years" postings.
+  #         A posting saying "1+ years" is DROPPED. Use this if you have
+  #         no professional experience. <- true fresher
+  #   1  -> also allows "1+ years" postings. Use this if you have ~a year,
+  #         or if you're willing to apply slightly above your level.
+  #   3  -> up to mid-level.
+  #   99 -> don't filter on experience at all.
+  #
+  # Postings that never state a requirement are always kept — a missed opening
+  # costs more than a false alert.
+  # ---------------------------------------------------------------------------
+  max_experience_years: 0
+
+  # ---------------------------------------------------------------------------
+  # YOUR STACK. A new posting's title + description must mention at least ONE of
+  # these, or it's dropped before you're alerted. This is what stops you getting
+  # pinged for iOS/DevOps/data-engineer roles you'd never apply to.
+  #
+  # Leave this list EMPTY to disable stack filtering entirely.
+  #
+  # The list below is a Java / Spring Boot / React full-stack example. Replace
+  # it with your own. A few starting points:
+  #
+  #   Frontend:  react, next.js, typescript, javascript, css, tailwind, vue
+  #   Backend:   java, spring, spring boot, node, express, django, go, golang
+  #   Data/ML:   python, pandas, sql, spark, pytorch, tensorflow, machine learning
+  #   Mobile:    android, kotlin, swift, ios, flutter, react native
+  #   DevOps:    docker, kubernetes, aws, terraform, ci/cd, linux
+  # ---------------------------------------------------------------------------
+  stack_keywords:
+    - java
+    - spring
+    - spring boot
+    - hibernate
+    - jpa
+    - react
+    - javascript
+    - python
+    - fastapi
+    - mysql
+    - sql
+    - rest
+    - api
+    - backend
+    - full stack
+    - microservice
+    - microservices
+    - machine learning
+    - llm
+    - rag
+    - langchain
+
+  # ---------------------------------------------------------------------------
+  # A job TITLE must contain at least ONE of these. Keep it broad — the stack
+  # and experience checks above do the precise filtering.
+  # ---------------------------------------------------------------------------
+  include_keywords:
+    - software engineer
+    - software developer
+    - java
+    - backend
+    - back end
+    - full stack
+    - fullstack
+    - full-stack
+    - sde
+    - graduate
+    - trainee
+    - associate engineer
+    - engineer i
+    - engineer 1
+    - junior
+    - intern
+    - internship
+    - apprentice
+    - web developer
+    - application engineer
+
+  # ---------------------------------------------------------------------------
+  # ...and must NOT contain any of these. This is what filters out senior roles.
+  # The bare numbers catch titles like "Software Engineer 2" / "SDE III".
+  # ---------------------------------------------------------------------------
+  exclude_keywords:
+    - senior
+    - sr
+    - lead
+    - staff
+    - principal
+    - manager
+    - architect
+    - director
+    - head
+    - technical leader
+    - distinguished
+    - smts
+    - lmts
+    - pmts
+    - dmts
+    - ii
+    - iii
+    - iv
+    - "2"
+    - "3"
+    - "4"
+    - sde2
+    - sde3
+    - sde4
+    - l2
+    - l3
+    - l4
+    - l5
+
+  # ---------------------------------------------------------------------------
+  # Location must contain one of these (matched against the posting's location
+  # text, lowercased). Postings with NO location listed are always kept, so you
+  # don't miss remote-friendly roles that leave the field blank.
+  #
+  # Leave EMPTY to accept every location.
+  # ---------------------------------------------------------------------------
+  locations:
+    - bengaluru
+    - bangalore
+    - karnataka
+    - pune
+    - maharashtra
+    - noida
+    - gurugram
+    - gurgaon
+    - delhi
+    - ncr
+    - india
+    - remote

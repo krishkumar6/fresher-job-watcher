@@ -9,9 +9,14 @@ Telegram notification for every NEW posting it hasn't seen before.
 Designed to run on a schedule (GitHub Actions cron) so you get alerted within
 ~1-2 hours of a job going live on the company's own portal.
 
+Config:
+    config.yaml     your filters (copy config.example.yaml to create it)
+    companies.yaml  the shared list of companies to poll
+
 Usage:
     python job_watcher.py            # normal run (needs TELEGRAM_* env vars)
     python job_watcher.py --test     # validate config, print matches, no alerts
+    python job_watcher.py --ping     # send one test message, check credentials
 """
 
 import html as html_lib
@@ -31,8 +36,11 @@ import yaml
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-CONFIG_FILE = Path(__file__).parent / "companies.yaml"
-STATE_FILE = Path(__file__).parent / "seen_jobs.json"
+HERE = Path(__file__).parent
+COMPANIES_FILE = HERE / "companies.yaml"   # shared list, maintained upstream
+CONFIG_FILE = HERE / "config.yaml"         # your filters, copied from the example
+EXAMPLE_CONFIG = HERE / "config.example.yaml"
+STATE_FILE = HERE / "seen_jobs.json"
 TIMEOUT = 20
 HEADERS = {"User-Agent": "Mozilla/5.0 (job-watcher; personal use)"}
 
@@ -142,7 +150,7 @@ def fetch_workday(careers_url, search_text=""):
     tenant = host.split(".")[0]
     site = [p for p in parsed.path.split("/") if p][-1]
     api = f"https://{host}/wday/cxs/{tenant}/{site}/jobs"
-    jobs, offset = [], 0
+    jobs, seen_paths, offset = [], set(), 0
     while offset <= 100:  # up to ~2 pages is plenty for new postings
         payload = {"limit": 20, "offset": offset, "searchText": search_text,
                    "appliedFacets": {}}
@@ -152,6 +160,13 @@ def fetch_workday(careers_url, search_text=""):
         postings = data.get("jobPostings", [])
         if not postings:
             break
+        # Some Workday tenants ignore `offset` and hand back page 1 every time.
+        # Stop as soon as a page adds nothing new instead of collecting the
+        # same postings six times over.
+        paths = {j.get("externalPath", "") for j in postings}
+        if paths <= seen_paths:
+            break
+        seen_paths |= paths
         for j in postings:
             path = j.get("externalPath", "")
             jobs.append({
@@ -239,6 +254,15 @@ DESC_EXPERIENCE_RE = re.compile(
     re.I,
 )
 
+# "1 year of Kafka is a plus" is not a requirement. Counting it let postings
+# demanding 5+ years through, because the smallest number in the description
+# won. Only clearly-optional phrasings are listed -- "preferred" is left out on
+# purpose, since it's very often how a real hard requirement is worded.
+OPTIONAL_RE = re.compile(
+    r"\b(?:a plus|nice to have|good to have|bonus|desirable)\b", re.I)
+
+SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n+")
+
 
 def has_senior_experience(title, max_years):
     m = EXPERIENCE_RE.search(title)
@@ -248,13 +272,19 @@ def has_senior_experience(title, max_years):
 def check_experience(desc, max_years):
     """
     (ok, note) based on the description text. Ranges like "3-5 years" count
-    their lower bound; if several requirements appear, the smallest wins so
-    "0-2 years" postings that also mention "5 years (nice to have)" survive.
+    their lower bound. Sentences phrased as optional ("...is a plus") are
+    ignored, so a "0-2 years" posting that also mentions "5 years with Kafka is
+    a plus" survives while a genuine "5+ years" posting does not. Of the
+    remaining hard requirements the smallest wins.
     None/empty desc means we couldn't verify -- keep the job (fail open).
     """
     if not desc:
         return True, "experience not stated"
-    mins = [int(m.group(1)) for m in DESC_EXPERIENCE_RE.finditer(desc)]
+    mins = []
+    for sentence in SENTENCE_RE.split(desc):
+        if OPTIONAL_RE.search(sentence):
+            continue
+        mins += [int(m.group(1)) for m in DESC_EXPERIENCE_RE.finditer(sentence)]
     if not mins:
         return True, "no experience requirement listed"
     lo = min(mins)
@@ -341,6 +371,32 @@ def send_telegram(text):
 # Main
 # ----------------------------------------------------------------------------
 
+def load_filters():
+    """
+    Your personal filters from config.yaml. Older single-file setups kept a
+    `filters:` block inside companies.yaml -- still honoured so an existing
+    checkout doesn't break, but config.yaml wins when both exist.
+    """
+    if CONFIG_FILE.exists():
+        config = yaml.safe_load(CONFIG_FILE.read_text(encoding="utf-8")) or {}
+        filters = config.get("filters")
+        if filters:
+            return filters
+        sys.exit(f"{CONFIG_FILE.name} has no `filters:` block. "
+                 f"Compare it against {EXAMPLE_CONFIG.name}.")
+
+    legacy = (yaml.safe_load(COMPANIES_FILE.read_text(encoding="utf-8")) or {}).get("filters")
+    if legacy:
+        print(f"[warn] Using the `filters:` block in {COMPANIES_FILE.name}. "
+              f"Move it to {CONFIG_FILE.name} so you can pull upstream company "
+              f"updates without conflicts.")
+        return legacy
+
+    sys.exit(f"No {CONFIG_FILE.name} found. Create one with:\n"
+             f"    cp {EXAMPLE_CONFIG.name} {CONFIG_FILE.name}\n"
+             f"then edit it to match your stack, locations and experience level.")
+
+
 def load_state():
     if STATE_FILE.exists():
         try:
@@ -365,9 +421,10 @@ def main():
               "until you do).")
         sys.exit(0 if ok else 1)
 
-    config = yaml.safe_load(CONFIG_FILE.read_text())
-    default_filters = config.get("filters", {})
-    companies = config.get("companies", [])
+    default_filters = load_filters()
+    companies = (yaml.safe_load(COMPANIES_FILE.read_text(encoding="utf-8")) or {}).get("companies", [])
+    if not companies:
+        sys.exit(f"No companies listed in {COMPANIES_FILE.name}.")
     seen = load_state()
     first_run = len(seen) == 0
 
@@ -384,6 +441,14 @@ def main():
         except Exception as e:
             print(f"[error] {name}: {e}")
             continue
+
+        # Belt-and-braces: a list API that returns the same posting twice would
+        # otherwise produce one Telegram alert per copy, since `fresh` below is
+        # computed before anything is added to `seen`.
+        deduped = {}
+        for j in jobs:
+            deduped.setdefault(j["id"], j)
+        jobs = list(deduped.values())
 
         filters = {**default_filters, **company.get("filters", {})}
         hits = [j for j in jobs if matches(j, filters)]

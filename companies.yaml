@@ -1,6 +1,14 @@
 # =============================================================================
-# Companies to watch + filters
+# Companies to watch — the shared list
 # =============================================================================
+# This file is maintained upstream and shared by everyone using this watcher.
+# YOUR OWN filters (stack, locations, experience level) live in `config.yaml`,
+# not here — so you can pull new companies from upstream without touching your
+# personal setup.
+#
+# Found a company that's missing? Add it below and open a PR — see
+# CONTRIBUTING.md. Everyone using the watcher gets it.
+#
 # HOW TO ADD A COMPANY (takes ~1 minute):
 #   1. Open the company's careers page and click any job posting.
 #   2. Look at the URL of the job board:
@@ -15,103 +23,6 @@
 # NOTE: The slugs below are common/likely values — RUN --test ONCE and remove
 # or fix any entry that errors. Company career systems change over time.
 # =============================================================================
-
-filters:
-  # Tuned to Krish's resume: Java / Spring Boot / React full-stack fresher.
-  #
-  # Max years of experience a posting may require (checked in the TITLE and,
-  # for new matches, in the FULL DESCRIPTION). 1 = fresher / 0-1 yrs only.
-  max_experience_years: 1
-  # A new posting's title+description must mention at least ONE of these
-  # (your resume's stack) or it is dropped before alerting:
-  stack_keywords:
-    - java
-    - spring
-    - spring boot
-    - hibernate
-    - jpa
-    - react
-    - javascript
-    - python
-    - fastapi
-    - mysql
-    - sql
-    - rest
-    - api
-    - backend
-    - full stack
-    - microservice
-    - microservices
-    - machine learning
-    - llm
-    - rag
-    - langchain
-  # A job title must contain at least ONE include keyword...
-  include_keywords:
-    - software engineer
-    - software developer
-    - java
-    - backend
-    - back end
-    - full stack
-    - fullstack
-    - full-stack
-    - sde
-    - graduate
-    - trainee
-    - associate engineer
-    - engineer i
-    - engineer 1
-    - junior
-    - intern
-    - internship
-    - apprentice
-    - web developer
-    - application engineer
-  # ...and must NOT contain any of these (filters out senior roles):
-  exclude_keywords:
-    - senior
-    - sr
-    - lead
-    - staff
-    - principal
-    - manager
-    - architect
-    - director
-    - head
-    - technical leader
-    - distinguished
-    - smts
-    - lmts
-    - pmts
-    - dmts
-    - ii
-    - iii
-    - iv
-    - "2"
-    - "3"
-    - "4"
-    - sde2
-    - sde3
-    - sde4
-    - l2
-    - l3
-    - l4
-    - l5
-  # Location must contain one of these (jobs with no location listed are kept):
-  locations:
-    - bengaluru
-    - bangalore
-    - karnataka
-    - pune
-    - maharashtra
-    - noida
-    - gurugram
-    - gurgaon
-    - delhi
-    - ncr
-    - india
-    - remote
 
 companies:
   # ------------- Startups / product companies (fast-moving, check often) ----
