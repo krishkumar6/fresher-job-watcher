@@ -42,8 +42,27 @@ Click **[Use this template] → Create a new repository** at the top of this pag
 > ⚠️ **Use the template button, not Fork.** GitHub disables scheduled
 > workflows on forked repositories, so a fork will never run on its own.
 
-Name it whatever you like. Public or private both work — Actions minutes are
-free and unlimited on public repos, and this job uses about a minute per run.
+**Name it whatever you like, but think about public vs private** — it decides
+whether this stays free.
+
+One run polls 129 companies with a one-second pause between each, so it takes
+**about 6-7 minutes** (measured: 369s of fetching plus ~1 min of setup). Every
+2 hours, that's roughly **2,500 minutes a month**.
+
+| Repo | Actions minutes | What that means |
+|---|---|---|
+| **Public** | unlimited, free | Every 2 hours forever, no quota. Your `config.yaml` and job history are visible — neither contains secrets, but they do show what you're applying for. |
+| **Private** | 2,000/month free | **Not enough for a 2-hour schedule.** It stops partway through the month. |
+
+If you want it **private**, change the schedule in
+`.github/workflows/watch.yml` to every 4 hours and you'll land around 1,250
+minutes — comfortably inside the free tier:
+
+```yaml
+    - cron: "0 */4 * * *"
+```
+
+You'll still hear about openings hours before they reach the aggregator sites.
 
 ### Step 2 — Create your Telegram bot (3 min)
 
