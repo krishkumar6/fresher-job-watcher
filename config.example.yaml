@@ -129,6 +129,37 @@ filters:
     - l3
     - l4
     - l5
+    # --- seniority the numeric checks miss ---
+    - vp
+    - avp
+    # --- non-engineering roles ---
+    # `intern` in include_keywords matches EVERY internship, and generic words
+    # like "api" or "sql" turn up in non-engineering descriptions, so finance
+    # and marketing internships were getting through. These titles are what
+    # actually separates them.
+    - finance
+    - accounting
+    - marketing
+    - sales
+    - business development
+    - talent
+    - recruiter
+    - recruitment
+    - human resources
+    - content
+    - copywriter
+    - copy writer
+    - graphic
+    - video
+    - legal
+    - consultant
+    - industrial
+    - game design
+    - revenue
+    - growth
+    - operations
+    - customer success
+    - product manager
 
   # ---------------------------------------------------------------------------
   # Location must contain one of these (matched against the posting's location
