@@ -34,8 +34,14 @@ jobs:
           python job_watcher.py --check-companies 2>&1 | tee report.txt
           echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
+      - name: Network looked broken, not the companies
+        if: steps.check.outputs.status == '2'
+        run: |
+          echo "::warning::Too many companies failed at once to blame their slugs."
+          echo "::warning::Treating this as a network problem on the runner. No issue opened."
+
       - name: Report broken companies as an issue
-        if: steps.check.outputs.status != '0'
+        if: steps.check.outputs.status == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

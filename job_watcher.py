@@ -428,8 +428,11 @@ def check_companies():
     so that company simply stops producing alerts and you never find out.
 
     Needs no config.yaml and no Telegram credentials, so it can run anywhere.
-    Exits non-zero if any company is broken, which is what the weekly
-    health-check workflow keys off.
+
+    Exit codes:
+        0  everything reachable
+        1  specific companies are broken -- worth opening an issue
+        2  so many failed that the network is the likely cause, not the slugs
     """
     companies = load_companies()
     broken, empty = [], []
@@ -440,11 +443,20 @@ def check_companies():
             print(f"[error] {name}: unknown ats '{company.get('ats')}'")
             broken.append(name)
             continue
-        try:
-            jobs = fetcher(company)
-        except Exception as e:
-            print(f"[error] {name}: {e}")
-            broken.append(name)
+        # One retry: a momentary blip shouldn't get a company reported as
+        # permanently stale, which is what sends people chasing a phantom.
+        for attempt in (1, 2):
+            try:
+                jobs = fetcher(company)
+                break
+            except Exception as e:
+                if attempt == 2:
+                    print(f"[error] {name}: {e}")
+                    broken.append(name)
+                    jobs = None
+                else:
+                    time.sleep(3)
+        if jobs is None:
             continue
         if jobs:
             print(f"[ok] {name}: {len(jobs)} postings")
@@ -456,9 +468,19 @@ def check_companies():
 
     print(f"\n{len(companies) - len(broken)}/{len(companies)} companies reachable, "
           f"{len(broken)} broken, {len(empty)} listing nothing.")
-    if broken:
-        print("Broken: " + ", ".join(broken))
-    sys.exit(1 if broken else 0)
+    if not broken:
+        sys.exit(0)
+    print("Broken: " + ", ".join(broken))
+
+    # Slugs go stale one at a time. Dozens failing at once means DNS died or
+    # the network dropped -- reporting that as "fix your slugs" is pure noise,
+    # and noise is how a useful alert gets ignored.
+    if len(broken) > max(5, len(companies) // 4):
+        print(f"\n{len(broken)} of {len(companies)} failed at once. That is almost "
+              f"certainly a network or DNS problem on this machine, not stale "
+              f"slugs. Not reporting these as broken.")
+        sys.exit(2)
+    sys.exit(1)
 
 
 def load_state():
