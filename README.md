@@ -226,6 +226,19 @@ of the rest.
 **A company shows `[error]`.** Its slug changed. See
 [CONTRIBUTING.md](CONTRIBUTING.md) — and please send a PR with the fix.
 
+**How would I even notice a company going stale?** You don't have to. A second
+workflow, **Company Health Check**, runs every Monday and opens a GitHub issue
+listing any company whose board stopped answering. That matters because a stale
+slug fails *silently* — that company just stops producing alerts. You can also
+run it yourself any time:
+
+```bash
+python job_watcher.py --check-companies
+```
+
+It needs no `config.yaml` and no Telegram credentials, so it works in a fresh
+clone.
+
 ---
 
 ## Limitations (honest ones)

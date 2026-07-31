@@ -17,6 +17,9 @@ Usage:
     python job_watcher.py            # normal run (needs TELEGRAM_* env vars)
     python job_watcher.py --test     # validate config, print matches, no alerts
     python job_watcher.py --ping     # send one test message, check credentials
+    python job_watcher.py --check-companies
+                                     # is every company's board still alive?
+                                     # needs no config.yaml, no credentials
 """
 
 import html as html_lib
@@ -49,6 +52,7 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
 TEST_MODE = "--test" in sys.argv
 PING_MODE = "--ping" in sys.argv
+CHECK_MODE = "--check-companies" in sys.argv
 
 
 # ----------------------------------------------------------------------------
@@ -410,6 +414,53 @@ def load_filters():
              f"then edit it to match your stack, locations and experience level.")
 
 
+def load_companies():
+    companies = (yaml.safe_load(COMPANIES_FILE.read_text(encoding="utf-8")) or {}).get("companies", [])
+    if not companies:
+        sys.exit(f"No companies listed in {COMPANIES_FILE.name}.")
+    return companies
+
+
+def check_companies():
+    """
+    Does every company's job board still answer? Companies switch ATS provider
+    without notice, which turns a slug stale -- and a stale slug fails quietly,
+    so that company simply stops producing alerts and you never find out.
+
+    Needs no config.yaml and no Telegram credentials, so it can run anywhere.
+    Exits non-zero if any company is broken, which is what the weekly
+    health-check workflow keys off.
+    """
+    companies = load_companies()
+    broken, empty = [], []
+    for company in companies:
+        name = company.get("name", company.get("slug", "?"))
+        fetcher = FETCHERS.get(company.get("ats", "").lower())
+        if not fetcher:
+            print(f"[error] {name}: unknown ats '{company.get('ats')}'")
+            broken.append(name)
+            continue
+        try:
+            jobs = fetcher(company)
+        except Exception as e:
+            print(f"[error] {name}: {e}")
+            broken.append(name)
+            continue
+        if jobs:
+            print(f"[ok] {name}: {len(jobs)} postings")
+        else:
+            # Not an error -- a company can legitimately have nothing open.
+            print(f"[warn] {name}: reachable but listing 0 postings")
+            empty.append(name)
+        time.sleep(1)
+
+    print(f"\n{len(companies) - len(broken)}/{len(companies)} companies reachable, "
+          f"{len(broken)} broken, {len(empty)} listing nothing.")
+    if broken:
+        print("Broken: " + ", ".join(broken))
+    sys.exit(1 if broken else 0)
+
+
 def load_state():
     if STATE_FILE.exists():
         try:
@@ -434,10 +485,11 @@ def main():
               "until you do).")
         sys.exit(0 if ok else 1)
 
+    if CHECK_MODE:
+        check_companies()
+
     default_filters = load_filters()
-    companies = (yaml.safe_load(COMPANIES_FILE.read_text(encoding="utf-8")) or {}).get("companies", [])
-    if not companies:
-        sys.exit(f"No companies listed in {COMPANIES_FILE.name}.")
+    companies = load_companies()
     seen = load_state()
     first_run = len(seen) == 0
 

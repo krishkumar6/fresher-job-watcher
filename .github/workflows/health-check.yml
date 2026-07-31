@@ -1,0 +1,77 @@
+name: Company Health Check
+
+# Companies switch ATS provider without telling anyone, which makes their slug
+# in companies.yaml stale. The watcher logs that as [error] and carries on, so
+# the company silently stops producing alerts and you never notice. This runs
+# weekly and opens an issue the moment that happens.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"     # Mondays, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write             # needed to open the report issue
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check every company's job board still answers
+        id: check
+        run: |
+          set +e
+          python job_watcher.py --check-companies 2>&1 | tee report.txt
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Report broken companies as an issue
+        if: steps.check.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Some company job boards stopped responding"
+          {
+            echo "The weekly health check found companies whose job board no longer answers."
+            echo "Until these are fixed they produce **no alerts at all**, silently."
+            echo
+            echo "Usually the company moved to a different ATS, so the \`slug\` or \`url\`"
+            echo "in \`companies.yaml\` is stale. Open their careers page, click any job,"
+            echo "and read the URL — see CONTRIBUTING.md for the mapping. Fix the entry,"
+            echo "or delete it if they've moved to a custom portal."
+            echo
+            echo '```'
+            grep '^\[error\]' report.txt || true
+            echo '```'
+            echo
+            echo "Verify a fix with: \`python job_watcher.py --check-companies\`"
+            echo
+            echo "[Full run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          } > issue.md
+
+          # Update the existing report rather than opening a new issue every week.
+          EXISTING=$(gh issue list --state open --search "$TITLE in:title" \
+                       --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file issue.md \
+              && echo "Commented on issue #$EXISTING"
+          else
+            gh issue create --title "$TITLE" --body-file issue.md \
+              || {
+                   echo "::error::Could not open an issue (are Issues enabled?). Report below."
+                   cat issue.md
+                 }
+          fi
+
+      - name: Fail the run so it shows red
+        if: steps.check.outputs.status != '0'
+        run: exit 1
