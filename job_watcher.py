@@ -246,11 +246,24 @@ def norm(s):
 EXPERIENCE_RE = re.compile(r"\b(\d{1,2})\s*(?:to\s*\d{1,2})?\s*\+?\s*(?:years?|yrs?)\b")
 DEFAULT_MAX_YEARS = 1
 
-# In descriptions, only count "N years" when "experience" follows within the
-# same sentence -- avoids false hits like "10 years since we were founded".
+# In descriptions, count "N years" only where it reads as a requirement.
+# Requiring the literal word "experience" nearby was too narrow: postings
+# routinely write "5+ years building production systems" with no "experience"
+# anywhere near it, and those were being read as having no requirement at all.
+# So also accept a role verb ("years building/developing/working..."), a
+# qualified noun ("years of professional/hands-on..."), or "years as a ...",
+# while still rejecting "10 years since we were founded".
 DESC_EXPERIENCE_RE = re.compile(
     r"\b(\d{1,2})\s*(?:\+|plus)?\s*(?:(?:-|–|to)\s*\d{1,2})?\s*\+?\s*"
-    r"(?:years?|yrs?)\b(?=[^.\n]{0,60}?(?:experience|exp\b))",
+    r"(?:years?|yrs?)\b"
+    r"(?!\s+(?:since|ago|in\s+business|of\s+operation))"
+    r"(?="
+    r"[^.\n]{0,60}?(?:experience|exp\b)"
+    r"|\s+(?:build|develop|design|writ|cod|program|engineer|work|ship|deliver)\w*"
+    r"|\s+(?:of|in|with)\s+(?:professional|hands|relevant|industry|software|"
+    r"engineering|backend|frontend|full|web|product|technical)\b"
+    r"|\s+as\s+an?\b"
+    r")",
     re.I,
 )
 
