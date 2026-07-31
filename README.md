@@ -45,18 +45,19 @@ Click **[Use this template] → Create a new repository** at the top of this pag
 **Name it whatever you like, but think about public vs private** — it decides
 whether this stays free.
 
-One run polls 129 companies with a one-second pause between each, so it takes
-**about 6-7 minutes** (measured: 369s of fetching plus ~1 min of setup). Every
-2 hours, that's roughly **2,500 minutes a month**.
+One run polls 129 companies with a one-second pause between each. Measured
+across real runs on GitHub's runners: **4-5 minutes** (4m11s to 5m24s). GitHub
+rounds every run up to the whole minute, so a 2-hour schedule costs roughly
+**1,800 minutes a month**.
 
 | Repo | Actions minutes | What that means |
 |---|---|---|
 | **Public** | unlimited, free | Every 2 hours forever, no quota. Your `config.yaml` and job history are visible — neither contains secrets, but they do show what you're applying for. |
-| **Private** | 2,000/month free | **Not enough for a 2-hour schedule.** It stops partway through the month. |
+| **Private** | 2,000/month free | A 2-hour schedule uses ~1,800 of them. It fits, but with ~10% headroom — one slow month and your alerts stop without warning. |
 
 If you want it **private**, change the schedule in
-`.github/workflows/watch.yml` to every 4 hours and you'll land around 1,250
-minutes — comfortably inside the free tier:
+`.github/workflows/watch.yml` to every 4 hours. That's ~900 minutes, less than
+half the allowance:
 
 ```yaml
     - cron: "0 */4 * * *"

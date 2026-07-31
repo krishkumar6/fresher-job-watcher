@@ -59,5 +59,32 @@ jobs:
           git config user.name "job-watcher-bot"
           git config user.email "actions@github.com"
           git add seen_jobs.json
-          git diff --cached --quiet || git commit -m "Update seen jobs [skip ci]"
-          git push
+          if git diff --cached --quiet; then
+            echo "State unchanged, nothing to commit."
+            exit 0
+          fi
+          git commit -m "Update seen jobs [skip ci]"
+          # A run takes several minutes. If anything else lands on main in that
+          # window -- you editing config.yaml, or an overlapping run -- this
+          # push is rejected and the state is lost, so jobs already alerted get
+          # alerted again. seen_jobs.json is a set of ids, so the correct
+          # resolution is the union of both sides. Merge and retry.
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push rejected (attempt $attempt/3) -- merging remote state."
+            cp seen_jobs.json /tmp/ours.json
+            git fetch origin main
+            git reset --hard origin/main
+            [ -f seen_jobs.json ] || echo '[]' > seen_jobs.json
+            python -c "import json;a=set(json.load(open('/tmp/ours.json')));b=set(json.load(open('seen_jobs.json')));json.dump(sorted(a|b),open('seen_jobs.json','w'),indent=0)"
+            git add seen_jobs.json
+            if git diff --cached --quiet; then
+              echo "Remote already has everything this run saw."
+              exit 0
+            fi
+            git commit -m "Update seen jobs [skip ci]"
+          done
+          echo "::error::Could not push state after 3 attempts."
+          exit 1
