@@ -53,6 +53,10 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 TEST_MODE = "--test" in sys.argv
 PING_MODE = "--ping" in sys.argv
 CHECK_MODE = "--check-companies" in sys.argv
+# --forget=mastercard re-arms already-seen jobs so they alert again. Exists so
+# nobody has to hand-edit seen_jobs.json to test that alerts work.
+FORGET = next((a.split("=", 1)[1] for a in sys.argv
+               if a.startswith("--forget=") and len(a) > 9), None)
 
 
 # ----------------------------------------------------------------------------
@@ -484,12 +488,24 @@ def check_companies():
 
 
 def load_state():
-    if STATE_FILE.exists():
-        try:
-            return set(json.loads(STATE_FILE.read_text()))
-        except json.JSONDecodeError:
-            return set()
-    return set()
+    if not STATE_FILE.exists():
+        return set()
+    try:
+        return set(json.loads(STATE_FILE.read_text()))
+    except json.JSONDecodeError as e:
+        # Never quietly treat a damaged state file as "no history". Doing that
+        # makes this look like a first run, which rebuilds the baseline, marks
+        # every currently-live posting as seen and alerts on none of them --
+        # a silent, unrecoverable loss that still exits green.
+        sys.exit(
+            f"{STATE_FILE.name} is not valid JSON: {e}\n"
+            f"It was most likely hand-edited. Fix the syntax and re-run.\n"
+            f"To re-alert specific jobs, don't edit this file by hand -- use:\n"
+            f"    python job_watcher.py --forget=<text>\n"
+            f"Deleting {STATE_FILE.name} outright also works, but it starts a\n"
+            f"fresh baseline: every posting live right now is marked seen and\n"
+            f"you will never be alerted about any of them."
+        )
 
 
 def save_state(seen):
@@ -514,6 +530,16 @@ def main():
     companies = load_companies()
     seen = load_state()
     first_run = len(seen) == 0
+
+    if FORGET and not first_run:
+        drop = {x for x in seen if FORGET.lower() in x.lower()}
+        if not drop:
+            sys.exit(f"No seen job ids contain {FORGET!r}. Nothing to re-arm.")
+        print(f"[forget] re-arming {len(drop)} job(s) matching {FORGET!r} — "
+              f"they will be treated as new and alerted on this run:")
+        for d in sorted(drop):
+            print(f"   {d}")
+        seen -= drop
 
     new_matches = []
     for company in companies:

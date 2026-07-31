@@ -10,6 +10,10 @@ on:
         description: "Just send a test Telegram message (checks credentials)"
         type: boolean
         default: false
+      forget:
+        description: "Re-alert already-seen jobs matching this text (e.g. mastercard). Leave blank for a normal run."
+        type: string
+        default: ""
 
 permissions:
   contents: write         # needed to commit seen_jobs.json back to the repo
@@ -42,7 +46,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python job_watcher.py ${{ inputs.ping && '--ping' || '' }}
+        run: python job_watcher.py ${{ inputs.ping && '--ping' || '' }} ${{ inputs.forget && format('--forget={0}', inputs.forget) || '' }}
 
       - name: Commit updated state
         # Run even if the watcher step failed: successfully-alerted jobs must

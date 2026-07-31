@@ -194,6 +194,25 @@ useful for watching *everything* a dream company posts:
 
 ## Troubleshooting
 
+**I set it up, everything is green, but no job alerts arrive.**
+Usually correct behaviour, not a fault. Your first run memorises every posting
+that already exists, and you only hear about jobs that go live *after* that
+moment. At `max_experience_years: 0` that's roughly one or two a day across all
+129 companies — quiet days are normal, and two people who set up hours apart
+will never get the same alerts.
+
+To prove it works without waiting, re-alert a job you've already seen:
+
+Actions → Run workflow → put something like `mastercard` in the **forget** box
+→ Run. Any already-seen job whose id contains that text is treated as new and
+alerted on that run.
+
+> **Never hand-edit `seen_jobs.json` to do this.** Deleting lines from a JSON
+> array almost always leaves a trailing comma, and a corrupt state file used to
+> be read as "no history" — which silently rebuilt the baseline and sent
+> nothing, while still finishing green. It now stops with an error instead, but
+> the `forget` box is the safe way.
+
 **No Telegram message ever arrives.**
 Run the workflow with the ping box checked. If it fails, the usual cause is
 that you never sent your bot a message (step 2.4) — a bot cannot start a
